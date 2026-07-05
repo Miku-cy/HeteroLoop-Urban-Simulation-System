@@ -380,11 +380,11 @@ canvas{display:block}
    架构: Three.js r150 + InstancedMesh + 协调式信号控制
    ============================================================ */
 
-// ========== CDN 多源加载 ==========
+// ========== CDN 多源加载(按可靠性排序,jsdelivr 已验证) ==========
 var CDNS=[
-  'https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js',
   'https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.min.js',
-  'https://unpkg.com/three@0.150.0/build/three.min.js'
+  'https://unpkg.com/three@0.150.0/build/three.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js'
 ];
 var ci=0;
 function loadNext(){
@@ -398,12 +398,26 @@ function loadNext(){
   var s=document.createElement('script');
   s.src=CDNS[ci];
   s.onload=function(){
-    if(typeof THREE!=='undefined'){
+    if(typeof THREE!=='undefined' && THREE.Scene){
       setLoad(45);
-      try{ init(); }catch(err){
+      try{
+        // WebGL 支持检测
+        var _c=document.createElement('canvas');
+        var _gl=_c.getContext('webgl2')||_c.getContext('webgl')||_c.getContext('experimental-webgl');
+        if(!_gl){
+          document.getElementById('loading').style.display='none';
+          var e=document.getElementById('err');e.style.display='block';
+          e.textContent='WebGL 不可用:您的浏览器或环境不支持 WebGL,无法运行 3D 仿真。请使用支持 WebGL 的现代浏览器(Chrome/Edge/Firefox)。';
+          return;
+        }
+        init();
+      }catch(err){
         document.getElementById('loading').style.display='none';
         var e=document.getElementById('err');e.style.display='block';
-        e.textContent='运行错误: '+err.message;
+        // 显示完整错误堆栈,便于诊断
+        var msg='运行错误: '+err.message+'\n\n[堆栈]\n'+(err.stack||'').split('\n').slice(0,6).join('\n');
+        e.textContent=msg;e.style.whiteSpace='pre-wrap';
+        console.error('[异环仿真] init() 异常:',err);
       }
     }else{ ci++; loadNext(); }
   };
@@ -824,10 +838,10 @@ function init(){
   });
 
   // 公园/广场(陆家嘴中心绿地 + 滨江公园)
-  bldgs.push({name:'陆家嘴中心绿地',cat:'park',x:5,z:45,w:30,d:22});
-  bldgs.push({name:'滨江公园',cat:'park',x:-78,z:30,w:18,d:50});
-  bldgs.push({name:'世纪广场',cat:'plaza',x:45,z:-45,w:24,d:20});
-  bldgs.push({name:'东方广场',cat:'plaza',x:-45,z:0,w:18,d:22});
+  bldgs.push({name:'陆家嘴中心绿地',cat:'park',x:5,z:45,w:30,d:22,h:0});
+  bldgs.push({name:'滨江公园',cat:'park',x:-78,z:30,w:18,d:50,h:0});
+  bldgs.push({name:'世纪广场',cat:'plaza',x:45,z:-45,w:24,d:20,h:0});
+  bldgs.push({name:'东方广场',cat:'plaza',x:-45,z:0,w:18,d:22,h:0});
 
   bldgs.forEach(function(b){b.flow=0; b.mesh=null; b.winMeshes=[];});
   setLoad(82);

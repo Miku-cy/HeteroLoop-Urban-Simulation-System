@@ -1,237 +1,309 @@
-# 🌆 HeteroLoop Urban Simulation System
+# 🌆 异环都市仿真系统
 
 <p align="center">
 
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 ![Three.js](https://img.shields.io/badge/Three.js-r150-orange?style=flat-square)
+![Version](https://img.shields.io/badge/version-2.0-blue?style=flat-square)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=flat-square)
-![HTML5](https://img.shields.io/badge/HTML5-Canvas-blue?style=flat-square)
+![WebGL](https://img.shields.io/badge/WebGL-2.0-red?style=flat-square)
 
 <a href="https://miku-cy.github.io/HeteroLoop-Urban-Simulation-System/">
-  <img src="https://img.shields.io/badge/Demo-Live%20Demo-ff6b6b?style=for-the-badge" alt="Live Demo"/>
+  <img src="https://img.shields.io/badge/Demo-%E5%9C%A8%E7%BA%BF%E6%BC%94%E7%A4%BA-ff6b6b?style=for-the-badge" alt="在线演示"/>
 </a>
 
 </p>
 
-> Real-time 3D urban traffic simulation powered by Three.js — Simulating vehicles, e-bikes, and pedestrians with AI-adaptive traffic signals
+> 基于 Three.js 的实时 3D 都市仿真系统 v2.0 —— 以上海陆家嘴 CBD 为参考,为《异环》开放世界技术预研打造的专业级城市交通仿真平台
 
-[中文版](./README_zh.md) | [Live Demo](https://miku-cy.github.io/HeteroLoop-Urban-Simulation-System/) | [Report Issues](https://github.com/Miku-cy/HeteroLoop-Urban-Simulation-System/issues)
-
----
-
-## ✨ Features
-
-- 🚗 **Vehicle Simulation** — Real-time vehicle spawning, routing, and collision detection with physics-based movement
-- 🛵 **E-bike System** — Independent electric scooter traffic flow simulation with lane-changing behavior
-- 🚶 **Pedestrian System** — Pedestrian movement with overpass/crosswalk support and pathfinding AI
-- 🚦 **Adaptive Traffic Lights** — AI-controlled signal timing based on real-time traffic density analysis
-- 🏢 **Building Analytics** — Real-time footfall statistics and heat mapping for each building
-- 🌃 **Night City Rendering** — Immersive dark-theme 3D cityscape with dynamic lighting effects
-- ⚡ **Performance Dashboard** — Live metrics: throughput, wait times, collision count, and entity tracking
-- 🎮 **Interactive Controls** — Mouse/keyboard navigation with real-time parameter adjustment
+[English](./README_en.md) | [在线演示](https://miku-cy.github.io/HeteroLoop-Urban-Simulation-System/) | [报告问题](https://github.com/Miku-cy/HeteroLoop-Urban-Simulation-System/issues) | [更新日志](./CHANGELOG.md)
 
 ---
 
-## 🚀 Quick Start
+## 📌 v2.0 重大更新
 
-### Option 1: Direct Browser (Recommended)
+| 维度 | v1.0(原版) | v2.0(陆家嘴 CBD 版) |
+|------|-----------|----------------------|
+| **路网** | 单交叉口演示 | 4×4 共 16 交叉口网格 + 主干道绿波协调 |
+| **场景** | 抽象城市 | 上海陆家嘴 CBD(黄浦江 + 三件套地标) |
+| **建模** | 简单方块 | 7 类建筑 + 螺旋/宝塔/开孔等地标专属建模 |
+| **界面** | 基础 HUD | 2026 顶级 Glassmorphism 3.0 + Bento Grid |
+| **渲染** | 普通 Mesh | InstancedMesh + BufferGeometry 合并 |
+| **信号** | 单点定时 | 16 交叉口协调式自适应 + 绿波 |
+| **车道** | 单车道 | 4 车道 + 非机动车道 + 人行道 + 标线 |
 
-Just open `index.html` in your browser — no build step or dependencies required!
+---
+
+## ✨ 功能特性
+
+### 🏙️ 专业级都市建模
+- **陆家嘴地标集群**:上海中心大厦(螺旋扭转)、环球金融中心(顶部开孔)、金茂大厦(宝塔层叠)、东方明珠塔、IFC 国金中心
+- **7 类建筑体系**:超高层 / 高层写字楼 / 中层办公 / 购物中心 / 沿街商铺 / 公园绿地 / 广场
+- **黄浦江水域**:贝塞尔曲线真实走向 + 江面反光层
+- **世纪大道高架**:主线桥面 + 桥墩 + 匝道
+- **高密度 CBD 布局**:9 个街区 × 多子地块,建筑密度逼近真实陆家嘴
+
+### 🚗 多模态交通仿真
+- **车辆系统**:4 车道分流 + 转弯决策(左转大半径/右转小半径)+ 同向避撞 + 信号停车
+- **电瓶车系统**:独立非机动车道 + 行人让行
+- **行人系统**:沿街人行道网络 + 交叉口信号穿越 + 寻路 AI
+- **碰撞检测**:车辆 × 行人实时检测,事故统计
+
+### 🚦 协调式自适应信号灯
+- **16 交叉口独立控制器**:4 相位(NS 绿→黄→EW 绿→黄)
+- **自适应绿延长**:基于实时队列长度动态调整绿灯时长
+- **主干道绿波协调**:沿世纪大道相位偏移,实现绿波带
+- **行人安全保护**:绿灯切断前检测交叉口行人
+
+### 🎨 2026 顶级 HUD 界面
+- **Glassmorphism 3.0**:毛玻璃 + 背景模糊 + 饱和度增强
+- **Bento Grid 布局**:顶栏 / 左栏 / 右栏 / 底栏 四区联动
+- **实时数据可视化**:FPS / Draw Call / 三角面数 / 流量趋势曲线
+- **多视角切换**:环绕 / 俯视 / 街景 / 电影机
+- **昼夜循环**:24 小时太阳轨迹 + 月光 + 雾密度 + 窗户夜间发光
+
+### ⚡ 高性能渲染
+- **InstancedMesh**:车辆(主体+车舱)/ 电瓶车 / 行人 三套实例化网格
+- **BufferGeometry 合并**:路面 / 标线 / 人行道各自合并为单 Mesh
+- **共享材质**:每类建筑一个材质,大幅降低 draw call
+- **DynamicDrawUsage**:实例矩阵/颜色动态更新
+- **性能保护**:实体上限 140 车 + 70 电瓶车 + 90 行人
+
+---
+
+## 🚀 快速开始
+
+### 方式一:直接浏览器打开(推荐)
+
+直接在浏览器中打开 `index.html` — 无需任何构建步骤或依赖!
 
 ```bash
-# On macOS
+# macOS
 open index.html
 
-# On Windows
+# Windows
 start index.html
 
-# On Linux
+# Linux
 xdg-open index.html
 ```
 
-### Option 2: Local Development Server
+### 方式二:本地开发服务器
 
 ```bash
 # Python 3
 python3 -m http.server 8080
-# Then open http://localhost:8080
+# 然后访问 http://localhost:8080
 
-# Node.js (if installed)
+# Node.js(如果已安装)
 npx serve .
-# Then open http://localhost:3000
+# 然后访问 http://localhost:3000
 ```
 
-### Option 3: Online Demo
+### 方式三:在线演示
 
-[Click here to experience the live demo](https://miku-cy.github.io/HeteroLoop-Urban-Simulation-System/) — no installation needed!
+[点击这里体验在线演示](https://miku-cy.github.io/HeteroLoop-Urban-Simulation-System/) — 由 GitHub Pages 自动部署,无需安装!
 
----
-
-## 🎮 Controls
-
-| Action | Control | Description |
-|--------|---------|-------------|
-| Rotate view | Mouse drag | Orbit camera around the city |
-| Zoom | Scroll wheel | Zoom in/out of the scene |
-| Pan | Right-click drag | Move camera position |
-| Toggle adaptive signals | Spacebar | Enable/disable AI traffic control |
-| Pause simulation | P key | Freeze all entities |
-| Reset view | R key | Return to default camera position |
+> **浏览器要求**:支持 WebGL 2.0 的现代浏览器(Chrome 90+ / Edge 90+ / Firefox 88+ / Safari 14+)
 
 ---
 
-## 🏗️ Architecture
+## 🎮 操作说明
+
+| 操作 | 控制方式 | 说明 |
+|------|----------|------|
+| 旋转视角 | 鼠标拖拽 | 围绕城市旋转相机 |
+| 缩放 | 滚轮 | 放大/缩小场景 |
+| 平移 | 右键拖拽 | 移动相机焦点 |
+| 切换视角 | 底栏按钮 | 环绕 / 俯视 / 街景 / 电影机 |
+| 自适应信号 | 底栏开关 | 启用/禁用 AI 交通控制 |
+| 行人开关 | 底栏开关 | 启用/禁用行人系统 |
+| 阴影开关 | 底栏开关 | 启用/禁用阴影渲染 |
+| 暂停仿真 | 底栏开关 / P 键 | 冻结所有实体 |
+| 昼夜调节 | 底栏滑块 | 0-1440 分钟城市时间 |
+| 生成率调节 | 左栏滑块 | 车辆 / 电瓶车 / 行人生成速率 |
+
+---
+
+## 🏗️ 系统架构
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                   HETEROloop SIMULATION                  │
-│                 异环都市仿真系统                           │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌─────────────────────────────────────────────────┐    │
-│  │              THREE.JS 3D ENGINE                  │    │
-│  │  ┌─────────────┐  ┌──────────────┐            │    │
-│  │  │   SCENE      │  │   CAMERAS     │            │    │
-│  │  │  - Buildings │  │  - Perspective│           │    │
-│  │  │  - Roads     │  │  - Orthographic│          │    │
-│  │  │  - Vehicles  │  │  - Controls   │            │    │
-│  │  │  - Lighting  │  └──────────────┘            │    │
-│  │  └─────────────┘                                │    │
-│  └─────────────────────────────────────────────────┘    │
-│                          │                              │
-│  ┌───────────────────────┴───────────────────────────┐ │
-│  │              ENTITY MANAGEMENT SYSTEM             │ │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────────────┐  │ │
-│  │  │VEHICLES │  │ E-BIKES │  │   PEDESTRIANS   │  │ │
-│  │  │ - Cars  │  │ - Scooters│ │  - Walkers    │  │ │
-│  │  │ - Trucks│  │ - Paths  │  │  - Crosswalks  │  │ │
-│  │  │ - Routes│  │ - Behavior│ │  - Overpasses  │  │ │
-│  │  └─────────┘  └─────────┘  └─────────────────┘  │ │
-│  └───────────────────────────────────────────────────┘ │
-│                          │                              │
-│  ┌───────────────────────┴───────────────────────────┐ │
-│  │              TRAFFIC CONTROL SYSTEM               │ │
-│  │  ┌──────────────┐  ┌─────────────────────────┐   │ │
-│  │  │TRAFFIC LIGHTS│  │   ADAPTIVE AI ENGINE   │   │ │
-│  │  │ - Timers     │  │  - Density analysis    │   │ │
-│  │  │ - Phases     │  │  - Timing optimization  │   │ │
-│  │  │ - States     │  │  - Learning (future)    │   │ │
-│  │  └──────────────┘  └─────────────────────────┘   │ │
-│  └───────────────────────────────────────────────────┘ │
-│                          │                              │
-│  ┌───────────────────────┴───────────────────────────┐ │
-│  │              ANALYTICS DASHBOARD                   │ │
-│  │  ┌─────────────┐  ┌──────────────┐               │ │
-│  │  │ REAL-TIME   │  │   HISTORICAL  │               │ │
-│  │  │ - Counts    │  │   - Charts   │               │ │
-│  │  │ - Speeds    │  │   - Trends   │               │ │
-│  │  │ - Collisions│  │   - Export   │               │ │
-│  │  └─────────────┘  └──────────────┘               │ │
-│  └───────────────────────────────────────────────────┘ │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│              异环都市仿真系统 v2.0 · 陆家嘴 CBD                │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │            THREE.JS r150 WebGL 渲染引擎              │    │
+│  │  ┌────────────┐  ┌────────────┐  ┌────────────┐   │    │
+│  │  │  场景图     │  │  相机系统   │  │  光照系统   │   │    │
+│  │  │ - 16 交叉  │  │ - 环绕视角  │  │ - 太阳(昼) │   │    │
+│  │  │ - 黄浦江   │  │ - 俯视视角  │  │ - 月亮(夜) │   │    │
+│  │  │ - 地标群   │  │ - 街景视角  │  │ - 半球光   │   │    │
+│  │  │ - 高架路   │  │ - 电影机    │  │ - 环境光   │   │    │
+│  │  └────────────┘  └────────────┘  └────────────┘   │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                              │                               │
+│  ┌───────────────────────────┴─────────────────────────┐    │
+│  │            实体系统 · InstancedMesh 高性能渲染        │    │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │    │
+│  │  │  车辆     │  │  电瓶车   │  │     行人         │  │    │
+│  │  │ 140 实例  │  │  70 实例  │  │    90 实例       │  │    │
+│  │  │ 主体+车舱 │  │  独立车道 │  │  人行道网络      │  │    │
+│  │  │ 4 车道    │  │  行人让行 │  │  信号穿越        │  │    │
+│  │  └──────────┘  └──────────┘  └──────────────────┘  │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                              │                               │
+│  ┌───────────────────────────┴─────────────────────────┐    │
+│  │          交通控制 · 协调式自适应信号系统              │    │
+│  │  ┌──────────────┐  ┌──────────────────────────┐     │    │
+│  │  │ 16 交叉口    │  │   自适应 AI 引擎          │     │    │
+│  │  │ 4 相位控制   │  │  - 队列密度分析           │     │    │
+│  │  │ 绿波协调     │  │  - 绿灯延长/切断          │     │    │
+│  │  │ 行人保护     │  │  - 主干道相位偏移         │     │    │
+│  │  └──────────────┘  └──────────────────────────┘     │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                              │                               │
+│  ┌───────────────────────────┴─────────────────────────┐    │
+│  │          分析仪表盘 · 2026 Glassmorphism HUD         │    │
+│  │  ┌────────────┐  ┌────────────┐  ┌────────────┐   │    │
+│  │  │ 实时指标    │  │ 流量趋势    │  │ 建筑客流    │   │    │
+│  │  │ - FPS      │  │ - 车流曲线  │  │ - 7 类统计  │   │    │
+│  │  │ - Draw Call│  │ - 电瓶车    │  │ - 热力权重  │   │    │
+│  │  │ - 三角面   │  │ - 行人      │  │ - 实时更新  │   │    │
+│  │  └────────────┘  └────────────┘  └────────────┘   │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📊 Dashboard Metrics
+## 📊 面板指标说明
 
-| Metric | Chinese | Description | Update Frequency |
-|--------|---------|-------------|------------------|
-| 车辆通行量 | Vehicles Passed | Total vehicles that passed through | Every 100ms |
-| 电瓶车通行 | E-bikes Passed | Total e-bikes in simulation | Every 100ms |
-| 总客流量 | Pedestrian Flow | Total pedestrians count | Real-time |
-| 车辆等待 | Vehicle Wait Time | Average wait time at signals | Rolling average |
-| 碰撞事故 | Collision Count | Total collision incidents | On event |
-| 路面车辆 | Road Vehicles | Active vehicles on road | Real-time |
-| 路面电瓶车 | Road E-bikes | Active e-bikes count | Real-time |
-| 路面行人 | Road Pedestrians | Active pedestrians count | Real-time |
-
----
-
-## 🎨 Technical Highlights
-
-### 1. Real-Time 3D Rendering
-- 60 FPS performance with Three.js WebGL rendering
-- Dynamic lighting with day/night cycle simulation
-- Instanced mesh rendering for hundreds of entities
-
-### 2. Intelligent Traffic System
-- BFS pathfinding algorithm for optimal routing
-- Collision detection using bounding box intersection
-- Traffic density calculation using spatial partitioning
-
-### 3. Adaptive AI
-- Real-time traffic flow analysis
-- Dynamic signal timing adjustment
-- Learning-based optimization (future enhancement)
-
-### 4. Performance Optimization
-- Object pooling to reduce garbage collection
-- Level-of-detail (LOD) for distant objects
-- RequestAnimationFrame for smooth animations
+| 指标 | 说明 | 更新频率 |
+|------|------|----------|
+| FPS | 渲染帧率(绿/黄/红 三档) | 500ms |
+| DRAW | Draw Call 数 | 500ms |
+| TRI·K | 三角面数(千) | 500ms |
+| 实体 | 当前车辆+电瓶车+行人总数 | 实时 |
+| 车辆通行量 | 累计通过车辆 | 实时 |
+| 电瓶车通行 | 累计通过电瓶车 | 实时 |
+| 行人客流 | 累计行人流量 | 实时 |
+| 平均等待 | 信号灯平均等待时间 | 滚动平均 |
+| 碰撞事故 | 碰撞事件总数 | 事件触发 |
+| 信号状态 | 16 交叉口实时灯色 | 实时 |
+| 流量趋势 | 60 秒历史曲线 | 1s |
 
 ---
 
-## 📁 Project Structure
+## 🎨 技术亮点
+
+### 1. 高性能渲染管线
+- **InstancedMesh**:三套实例化网格,单 draw call 渲染上百实体
+- **BufferGeometry 合并**:路面/标线/人行道各自合并,减少 draw call
+- **共享材质**:每类建筑一个材质,避免材质切换开销
+- **PCFSoftShadowMap**:软阴影 + 法线偏移,消除阴影瑕疵
+- **ACESFilmicToneMapping**:电影级色调映射
+
+### 2. 协调式交通控制
+- **4 相位信号**:NS 绿→NS 黄→EW 绿→EW 黄 循环
+- **自适应绿延长**:绿灯相位检测队列长度,动态延长(最长 45s)
+- **绿波协调**:主干道交叉口相位偏移,实现绿波带
+- **行人保护**:绿灯切断前检测交叉口行人,确保安全
+
+### 3. 成熟车道布局
+- **4 机动车道**:内/外车道,转向车走内侧
+- **非机动车道**:独立 2.5m 宽,电瓶车专用
+- **人行道**:3m 宽,行人寻路网络
+- **标线系统**:双黄线 + 车道虚线 + 停止线 + 人行横道
+
+### 4. 昼夜循环系统
+- **太阳轨迹**:24 小时压缩至 300 秒,6 点日出 18 点日落
+- **月光补偿**:夜间定向月光补光
+- **雾密度**:夜间雾密度增加,营造氛围
+- **窗户发光**:夜间建筑窗户自动点亮
+
+---
+
+## 📁 项目结构
 
 ```
 HeteroLoop-Urban-Simulation-System/
-├── index.html              # Main application (single file)
-├── README.md              # English documentation
-├── README_zh.md           # 中文文档
-├── .gitignore             # Git ignore rules
-├── CONTRIBUTING.md         # Contribution guidelines
-└── CHANGELOG.md           # Version history
+├── index.html              # 主程序(v2.0 单文件应用,~2000 行)
+├── README.md              # 中文文档(默认)
+├── README_en.md           # 英文文档
+├── CHANGELOG.md           # 版本历史
+├── CONTRIBUTING.md         # 贡献指南
+├── .gitignore             # Git 忽略规则
+└── .github/
+    └── workflows/
+        ├── create-release.yml   # Release 自动发布
+        └── deploy-pages.yml     # GitHub Pages 自动部署
 ```
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 技术栈
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Three.js** | r150+ | 3D rendering engine |
-| **JavaScript** | ES6+ | Core programming language |
-| **HTML5 Canvas** | - | HUD overlay and charts |
-| **WebGL** | 2.0 | GPU-accelerated graphics |
+| 技术 | 版本 | 用途 |
+|------|------|------|
+| **Three.js** | r150 | 3D 渲染引擎(WebGL) |
+| **JavaScript** | ES6+ | 核心编程语言 |
+| **HTML5 Canvas** | - | HUD 叠加层和趋势图表 |
+| **WebGL** | 2.0 | GPU 加速图形渲染 |
+| **CSS3** | - | Glassmorphism HUD 样式 |
 
-### No Build Step Required
-This project uses **zero build tools** and **zero npm dependencies** (except Three.js CDN). Just open `index.html` and it works!
-
----
-
-## 📸 Screenshots
-
-### Main Interface
-- 3D city view with buildings, roads, and vehicles
-- Real-time performance dashboard overlay
-- Adaptive traffic signal indicators
-
-### Night Mode
-- Dynamic city lighting simulation
-- Vehicle headlights and street lamps
-- Ambient occlusion effects
+### 零构建零依赖
+本项目**零构建工具**和**零 npm 依赖**(仅 Three.js 通过 CDN 加载)。只需打开 `index.html` 即可运行!
 
 ---
 
-## 🤝 Contributing
+## 🚀 部署
 
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on:
-- Development setup
-- Code standards
-- Pull request process
-- Issue reporting
+### GitHub Pages(自动部署)
+推送到 `main` 分支后,GitHub Actions 会自动部署到 GitHub Pages:
+- 访问地址:https://miku-cy.github.io/HeteroLoop-Urban-Simulation-System/
+- 部署workflow:`.github/workflows/deploy-pages.yml`
+
+### 手动部署
+可将 `index.html` 部署到任何静态托管服务:
+- GitHub Pages
+- Netlify
+- Vercel
+- Cloudflare Pages
+- 任意 HTTP 服务器
 
 ---
 
-## 📜 License
+## 🤝 贡献指南
 
-MIT License - feel free to use this project for education, research, or commercial purposes.
+欢迎贡献代码!请查看 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解:
+- 开发环境设置
+- 代码规范标准
+- Pull Request 流程
+- 问题报告方式
+
+---
+
+## 📜 许可证
+
+MIT 许可证 — 可免费用于教育、研究或商业目的。
+
+---
+
+## 🎯 项目背景
+
+本项目为网络游戏《异环》开放世界技术预研,以专业游戏公司视角设计都市仿真系统,验证:
+- 高密度城市场景的 WebGL 渲染性能
+- 多模态交通流仿真可行性
+- 协调式交通信号控制算法
+- 2026 顶级 HUD 设计语言落地
+
+参考原型:上海陆家嘴 CBD(世纪大道 × 浦东南路交叉口群)
 
 ---
 
 <p align="center">
-  <strong>Built with ⏳ for urban simulation research</strong><br/>
-  <sub>Powered by Three.js WebGL</sub>
+  <strong>为《异环》开放世界技术预研而生 ⏳</strong><br/>
+  <sub>由 Three.js WebGL 强力驱动 · v2.0 陆家嘴 CBD Edition</sub>
 </p>
